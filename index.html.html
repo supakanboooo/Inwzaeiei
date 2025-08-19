@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>pH Checker for Aquatic Life</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(to right, #dff9fb, #c7ecee);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px;
+    }
+
+    h1 {
+      color: #130f40;
+    }
+
+    .container {
+      background-color: #ffffffcc;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 350px;
+    }
+
+    input, button {
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #aaa;
+    }
+
+    button {
+      background-color: #00a8ff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0097e6;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .safe { background-color: #dff9d8; color: #27ae60; }
+    .warning { background-color: #ffeaa7; color: #e17055; }
+    .danger { background-color: #fab1a0; color: #d63031; }
+    .toxic { background-color: #ff7675; color: #6d214f; }
+
+    .fish-image {
+      margin-top: 20px;
+    }
+
+    .fish-image img {
+      width: 120px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧪 ตรวจสอบค่า pH น้ำ</h1>
+
+  <div class="container">
+    <p>กรอกค่าพีเอช (pH):</p>
+    <input type="number" id="phInput" step="0.1" placeholder="เช่น 7.5">
+    <button onclick="checkPH()">ตรวจสอบ</button>
+
+    <div id="result"></div>
+    <div class="fish-image" id="fishImage">
+      <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="fish" id="fishPic">
+    </div>
+  </div>
+
+  <script>
+    function checkPH() {
+      const ph = parseFloat(document.getElementById('phInput').value);
+      const result = document.getElementById('result');
+      const fishPic = document.getElementById('fishPic');
+
+      let message = "";
+      let className = "";
+      let imageUrl = "";
+
+      if (isNaN(ph)) {
+        message = "⚠️ กรุณากรอกค่าที่ถูกต้อง";
+        className = "warning";
+        imageUrl = "https://cdn-icons-png.flaticon.com/512/616/616408.png";
+      } else if (ph <= 4.0) {
+        message = "❌ pH 4.0 หรือต่ำกว่า = เป็นจุดอันตราย ปลาตายได้";
+        className = "toxic";
+        imageUrl = "https://cdn-icons-png.flaticon.com/512/616/616415.png"; // fish sick
+      } else if (ph > 4.0 && ph <= 6.0) {
+        message = "⚠️ pH 4.0 - 6.0 = บางชนิดไม่ตาย แต่โตช้า หยุดสืบพันธุ์";
+        className = "danger";
+        imageUrl = "https://cdn-icons-png.flaticon.com/512/616/616431.png"; // neutral fish
+      } else if (ph > 6.0 && ph <= 9.0) {
+        message = "✅ pH 6.5 - 9.0 = เหมาะสมต่อการเพาะเลี้ยงสัตว์น้ำ";
+        className = "safe";
+        imageUrl = "https://cdn-icons-png.flaticon.com/512/616/616408.png"; // happy fish
+      } else if (ph > 9.0 && ph <= 11.0) {
+        message = "⚠️ pH 9.0 - 11.0 = ไม่เหมาะ ถ้าอยู่นานจะมีผลเสีย";
+        className = "warning";
+        imageUrl = "https://cdn-icons-png.flaticon.com/512/616/616431.png"; // neutral fish
+      } else if (ph > 11.0) {
+        message = "❌ pH มากกว่า 11 = เป็นพิษต่อปลา!";
+        className = "toxic";
+        imageUrl = "https://cdn-icons-png.flaticon.com/512/616/616415.png"; // sick fish
+      }
+
+      result.className = className;
+      result.textContent = message;
+      fishPic.src = imageUrl;
+    }
+  </script>
+
+</body>
+</html>
